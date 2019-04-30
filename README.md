@@ -1,13 +1,13 @@
  
 
 
-## HookMaster
+# HookMaster
 
 ![](https://img.shields.io/badge/hook--master-v1.0.0-green.svg) ![](https://img.shields.io/badge/tests-passing-green.svg) ![](https://img.shields.io/badge/statements--coverage-100%25-green.svg) ![](https://img.shields.io/badge/branches--coverage-100%25-green.svg) ![](https://img.shields.io/badge/functions--coverage-100%25-green.svg) ![](https://img.shields.io/badge/lines--coverage-100%25-green.svg) ![](https://img.shields.io/badge/full--coverage-yes-green.svg)
 
 Create, remove and trigger synchronous or asynchronous events easily.
 
-### Why?
+## Why?
 
 Mainly, HookMaster was created to build:
 
@@ -18,11 +18,11 @@ Mainly, HookMaster was created to build:
 - events that pass one to each other some value
 - events that finally return a result
 
-### Install
+## Install
 
 `~$ npm install hook-master`
 
-### Usage
+## Usage
 
 ```js
 const HookMaster = require("hook-master");
@@ -58,10 +58,10 @@ hook.trigger("hello", "", []).then(message => {
 
 ```
 
-### API Reference
+## API Reference
 
 
-#### HookMaster = require("hook-master");
+### HookMaster = require("hook-master");
 
 
 **Name:** `HookMaster`
@@ -78,7 +78,7 @@ hook.trigger("hello", "", []).then(message => {
 
 ----
 
-#### HookMaster.create(...args)
+### HookMaster.create(...args)
 
 
 **Name:** `HookMaster.create`
@@ -100,7 +100,7 @@ hook.trigger("hello", "", []).then(message => {
 
 ----
 
-#### HookMaster.DEFAULT_OPTIONS
+### HookMaster.DEFAULT_OPTIONS
 
 
 **Name:** `HookMaster.DEFAULT_OPTIONS`
@@ -119,7 +119,7 @@ hook.trigger("hello", "", []).then(message => {
 
 ----
 
-#### hookMaster = new HookMaster(options = {})
+### hookMaster = new HookMaster(options = {})
 
 
 **Name:** `HookMaster constructor`
@@ -141,7 +141,7 @@ hook.trigger("hello", "", []).then(message => {
 
 ----
 
-#### hookMaster.add(name, event, meta = {})
+### hookMaster.add(name, event, meta = {})
 
 
 **Name:** `hookMaster.add`
@@ -179,7 +179,7 @@ This data can be useful to remove items by identifiers or other metadata propert
 
 ----
 
-#### hookMaster.remove(name, filter = undefined)
+### hookMaster.remove(name, filter = undefined)
 
 
 **Name:** `hookMaster.remove`
@@ -203,7 +203,7 @@ This data can be useful to remove items by identifiers or other metadata propert
 
 ----
 
-#### hookMaster.trigger(name, initialResult = undefined, ...parameters)
+### hookMaster.trigger(name, initialResult = undefined, ...parameters)
 
 
 **Name:** `hookMaster.trigger`
@@ -227,15 +227,15 @@ This data can be useful to remove items by identifiers or other metadata propert
  
 
 
-### Tests
+## Tests
 
 `~$ npm run test`
 
-### Document
+## Document
 
 `~$ npm run docs`
 
-### Conclusion
+## Conclusion
 
 Simple library to create easily sync/async systems of hooks. It can be useful if you have in mind something pluggable.
 
