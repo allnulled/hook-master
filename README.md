@@ -3,7 +3,7 @@
 
 # HookMaster
 
-![](https://img.shields.io/badge/hook--master-v1.0.0-green.svg) ![](https://img.shields.io/badge/tests-passing-green.svg) ![](https://img.shields.io/badge/statements--coverage-100%25-green.svg) ![](https://img.shields.io/badge/branches--coverage-100%25-green.svg) ![](https://img.shields.io/badge/functions--coverage-100%25-green.svg) ![](https://img.shields.io/badge/lines--coverage-100%25-green.svg) ![](https://img.shields.io/badge/full--coverage-yes-green.svg)
+![](https://img.shields.io/badge/hook--master-v1.0.1-green.svg) ![](https://img.shields.io/badge/tests-passing-green.svg) ![](https://img.shields.io/badge/statements--coverage-100%25-green.svg) ![](https://img.shields.io/badge/branches--coverage-100%25-green.svg) ![](https://img.shields.io/badge/functions--coverage-100%25-green.svg) ![](https://img.shields.io/badge/lines--coverage-100%25-green.svg) ![](https://img.shields.io/badge/full--coverage-yes-green.svg)
 
 Create, remove and trigger synchronous or asynchronous events easily.
 
@@ -144,6 +144,27 @@ Take a look to the tests to see a full demo of the API.
 
 ----
 
+### hookMaster.initialize(name)
+
+
+**Name:** `hookMaster.initialize`
+
+**Description:** Initializes a new hook in the `HookMaster` instance (by a `name`).
+
+**Type:** `instance method`
+
+**Parameter:** `name:String`. Name of the new hook to be initialized.
+
+**Return:** `undefined`. Nothing.
+
+
+
+
+ 
+
+
+----
+
 ### hookMaster.add(name, event, meta = {})
 
 
@@ -153,7 +174,7 @@ Take a look to the tests to see a full demo of the API.
 
 **Type:** `instance method`
 
-**Parameter:** `name:String`. Name of the hook into which the events is going to be added.
+**Parameter:** `name:String`. Name of the hook into which the event is going to be added.
 
 **Parameter:** `event:Function`. Function that is the event added to the specified hook.
 This function:

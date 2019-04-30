@@ -2,7 +2,7 @@
  *
  * # HookMaster
  * 
- * ![](https://img.shields.io/badge/hook--master-v1.0.0-green.svg) ![](https://img.shields.io/badge/tests-passing-green.svg) ![](https://img.shields.io/badge/statements--coverage-100%25-green.svg) ![](https://img.shields.io/badge/branches--coverage-100%25-green.svg) ![](https://img.shields.io/badge/functions--coverage-100%25-green.svg) ![](https://img.shields.io/badge/lines--coverage-100%25-green.svg) ![](https://img.shields.io/badge/full--coverage-yes-green.svg)
+ * ![](https://img.shields.io/badge/hook--master-v1.0.1-green.svg) ![](https://img.shields.io/badge/tests-passing-green.svg) ![](https://img.shields.io/badge/statements--coverage-100%25-green.svg) ![](https://img.shields.io/badge/branches--coverage-100%25-green.svg) ![](https://img.shields.io/badge/functions--coverage-100%25-green.svg) ![](https://img.shields.io/badge/lines--coverage-100%25-green.svg) ![](https://img.shields.io/badge/full--coverage-yes-green.svg)
  * 
  * Create, remove and trigger synchronous or asynchronous events easily.
  *
@@ -132,12 +132,31 @@ class HookMaster {
 	 *
 	 * ----
 	 *
+	 * ### hookMaster.initialize(name)
+	 *
+	 * @name `hookMaster.initialize`
+	 * @description Initializes a new hook in the `HookMaster` instance (by a `name`).
+	 * @type `instance method`
+	 * @parameter `name:String`. Name of the new hook to be initialized.
+	 * @return `undefined`. Nothing.
+	 *
+	 */
+	initialize(name) {
+		if (!(name in this.hooks)) {
+			this.hooks[name] = [];
+		}
+	}
+
+	/**
+	 *
+	 * ----
+	 *
 	 * ### hookMaster.add(name, event, meta = {})
 	 *
 	 * @name `hookMaster.add`
 	 * @description Adds a new hook (`event`) to the `HookMaster` instance (by a `name`) assigning its own metadata (by `meta`).
 	 * @type `instance method`
-	 * @parameter `name:String`. Name of the hook into which the events is going to be added.
+	 * @parameter `name:String`. Name of the hook into which the event is going to be added.
 	 * @parameter `event:Function`. Function that is the event added to the specified hook.
 	 * This function:
 	 *
@@ -157,9 +176,7 @@ class HookMaster {
 	 *
 	 */
 	add(name, event, meta = {}) {
-		if (!(name in this.hooks)) {
-			this.hooks[name] = [];
-		}
+		this.initialize(name);
 		event.__hook_metadata__ = meta;
 		this.hooks[name].push(event);
 		this.hooks[name].sort(this.options.sorter);

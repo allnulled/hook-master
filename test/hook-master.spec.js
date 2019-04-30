@@ -7,6 +7,8 @@ describe("HookMaster class", function() {
 		const results = [];
 		const hooks = HookMaster.create();
 
+		hooks.initialize("init");
+
 		hooks.add(
 			"init",
 			function(result, ...parameters) {
