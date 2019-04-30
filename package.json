@@ -1,8 +1,8 @@
 {
   "name": "hook-master",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Create, remove and trigger synchronous or asynchronous events easily.",
+  "main": "src/hook-master.js",
   "directories": {
     "test": "test"
   },
