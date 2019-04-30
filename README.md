@@ -58,6 +58,9 @@ hook.trigger("hello", "", []).then(message => {
 
 ```
 
+Take a look to the tests to see a full demo of the API.
+
+
 ## API Reference
 
 
@@ -231,6 +234,10 @@ This data can be useful to remove items by identifiers or other metadata propert
 
 `~$ npm run test`
 
+## Code coverage
+
+`~$ npm run coverage`
+
 ## Document
 
 `~$ npm run docs`
@@ -242,4 +249,3 @@ Simple library to create easily sync/async systems of hooks. It can be useful if
 
 
 
-# Read this file

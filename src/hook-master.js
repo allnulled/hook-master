@@ -56,7 +56,10 @@
  * // const message = await hook.trigger("hello", "");
  *
  * ```
- *
+ * 
+ * Take a look to the tests to see a full demo of the API.
+ * 
+ * 
  * ## API Reference
  *
  *
@@ -234,6 +237,10 @@ class HookMaster {
  * ## Tests
  *
  * `~$ npm run test`
+ *
+ * ## Code coverage
+ *
+ * `~$ npm run coverage`
  *
  * ## Document
  *
