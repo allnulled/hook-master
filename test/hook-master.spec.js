@@ -129,7 +129,6 @@ describe("HookMaster class", function() {
 	});
 
 	it("can reproduce the example of the README", function(doneTest) {
-
 		this.timeout(4000);
 
 		const hook = HookMaster.create();
@@ -181,16 +180,28 @@ describe("HookMaster class", function() {
 			return result + " World!";
 		});
 
-		hook.trigger(["hello", "bye"], "", []).then((message) => {
-			expect(message).to.equal("Hello World! Good bye World!");
-			return doneTest();
-		}).catch(console.log);
-
+		hook
+			.trigger(["hello", "bye"], "", [])
+			.then((message) => {
+				expect(message).to.equal("Hello World! Good bye World!");
+				return doneTest();
+			})
+			.catch(console.log);
 	});
 
 	it("fails if you provide bad parameters to trigger", function() {
 		expect(function() {
 			HookMaster.create().trigger(null);
-		}).to.throw();
-	})
+		}).to.throw("InvalidArgumentTypeError");
+	});
+
+	it("fails if you provide a name of not existing trigger", function(doneTest) {
+		try {
+			HookMaster.create().trigger("gogogo!", "Message");
+		} catch (error) {
+			expect(error.name).to.equal("Error");
+			expect(error.message).to.equal("HookNameNotFoundError");
+			return doneTest();
+		}
+	});
 });

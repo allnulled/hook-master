@@ -4,7 +4,7 @@
  * 
  * ![](https://img.shields.io/badge/hook--master-v1.0.1-green.svg) ![](https://img.shields.io/badge/tests-passing-green.svg) ![](https://img.shields.io/badge/statements--coverage-100%25-green.svg) ![](https://img.shields.io/badge/branches--coverage-100%25-green.svg) ![](https://img.shields.io/badge/functions--coverage-100%25-green.svg) ![](https://img.shields.io/badge/lines--coverage-100%25-green.svg) ![](https://img.shields.io/badge/full--coverage-yes-green.svg)
  * 
- * Create, remove and trigger synchronous or asynchronous events easily.
+ * Create, remove and trigger synchronous or asynchronous events easily. No dependencies. Less than 100 lines.
  *
  * ## Why?
  *
@@ -236,6 +236,9 @@ class HookMaster {
 	 */
 	trigger(nameOrNames, initialResult = undefined, ...parameters) {
 		if(typeof nameOrNames === "string") {
+			if(!(nameOrNames in this.hooks)) {
+				throw new Error("HookNameNotFoundError", "[ERROR] HookMaster#trigger($1, ...) => $1: name of hook <" + nameOrNames + "> was not found in: <" + Object.keys(this.hooks).join("|") + ">");
+			}
 			const hooks = this.hooks[nameOrNames].sort(this.options.sorter);
 			var result = initialResult;
 			var index = 0;
