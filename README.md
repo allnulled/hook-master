@@ -25,37 +25,47 @@ Mainly, HookMaster was created to build:
 ## Usage
 
 ```js
-const HookMaster = require("hook-master");
-
-const hook = HookMaster.create({
- sorter: HookMaster.DEFAULT_OPTIONS.sorter
-}); // this 'options' parameter is redundant, but explicative
+const hook = HookMaster.create();
 
 // Asynchronous event lastly executed by the hook "hello" (because the order is 40):
-hook.add("hello", function(parameters, result) {
+hook.add("hello", function(result, parameters) {
  return new Promise(function(resolve, reject) {
    return resolve(result + "!");
  });
-}, {order: 40});
+}, { order: 40 });
 
 // Synchronous event firstly executed by the hook "hello" (because the order is 20):
-hook.add("hello", function(parameters, result) {
+hook.add("hello", function(result, parameters) {
  return result + "Hell";
-}, {order: 20});
+}, { order: 20 });
 
 // Synchronous event executed in the second position by the hook "hello" (because the order is 30):
-hook.add("hello", function(parameters, result) {
+hook.add("hello", function(result, parameters) {
  return result + "o World";
-}, {order: 30});
+}, { order: 30 });
 
 // Execution of the event calling `hook.trigger(hook name, initial result, ...parameters)`:
-hook.trigger("hello", "", []).then(message => {
+hook.trigger("hello", "", []).then((message) => {
  expect(message).to.equal("Hello World!");
 });
 
 // In async/await context, you can simply do:
 // const message = await hook.trigger("hello", "");
 
+hook.add("bye", function(result, parameters) {
+ expect(result).to.equal("Hello World!");
+ return result + " Good bye";
+});
+
+hook.add("bye", function(result, parameters) {
+ expect(result).to.equal("Hello World! Good bye");
+ return result + " World!";
+});
+
+hook.trigger(["hello", "bye"], "", []).then((message) => {
+ expect(message).to.equal("Hello World! Good bye World!");
+ return doneTest();
+}).catch(console.log);
 ```
 
 Take a look to the tests to see a full demo of the API.
@@ -190,7 +200,7 @@ This function:
 
 **Parameter:** `meta:Object`. **Optional**.
 Metadata object for the current event.
-This object is statically added to the event function through its `__hook_metadata__` property.
+This object is statically added to the event function through its `HOOK_MASTER_METADATA` property.
 This data can be useful to remove items by identifiers or other metadata properties, for example.
 
 **Return:** `undefined`. Nothing.
@@ -236,7 +246,7 @@ This data can be useful to remove items by identifiers or other metadata propert
 
 **Type:** `instance method`
 
-**Parameter:** `name:String`. Name of the hook to be triggered.
+**Parameter:** `name:String|Array<String>`. Name(s) of the hook(s) to be triggered.
 
 **Parameter:** `initialResult:Any`. Result that will be passed through all the events of the hook, allowing a decorator design pattern in every hook.
 

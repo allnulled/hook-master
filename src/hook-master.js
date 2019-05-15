@@ -24,37 +24,47 @@
  * ## Usage
  *
  * ```js
- * const HookMaster = require("hook-master");
- *
- * const hook = HookMaster.create({
- *   sorter: HookMaster.DEFAULT_OPTIONS.sorter
- * }); // this 'options' parameter is redundant, but explicative
- *
+ * const hook = HookMaster.create();
+ * 
  * // Asynchronous event lastly executed by the hook "hello" (because the order is 40):
- * hook.add("hello", function(parameters, result) {
+ * hook.add("hello", function(result, parameters) {
  *   return new Promise(function(resolve, reject) {
  *     return resolve(result + "!");
  *   });
- * }, {order: 40});
- *
+ * }, { order: 40 });
+ * 
  * // Synchronous event firstly executed by the hook "hello" (because the order is 20):
- * hook.add("hello", function(parameters, result) {
+ * hook.add("hello", function(result, parameters) {
  *   return result + "Hell";
- * }, {order: 20});
- *
+ * }, { order: 20 });
+ * 
  * // Synchronous event executed in the second position by the hook "hello" (because the order is 30):
- * hook.add("hello", function(parameters, result) {
+ * hook.add("hello", function(result, parameters) {
  *   return result + "o World";
- * }, {order: 30});
- *
+ * }, { order: 30 });
+ * 
  * // Execution of the event calling `hook.trigger(hook name, initial result, ...parameters)`:
- * hook.trigger("hello", "", []).then(message => {
+ * hook.trigger("hello", "", []).then((message) => {
  *   expect(message).to.equal("Hello World!");
  * });
- *
+ * 
  * // In async/await context, you can simply do:
  * // const message = await hook.trigger("hello", "");
- *
+ * 
+ * hook.add("bye", function(result, parameters) {
+ *   expect(result).to.equal("Hello World!");
+ *   return result + " Good bye";
+ * });
+ * 
+ * hook.add("bye", function(result, parameters) {
+ *   expect(result).to.equal("Hello World! Good bye");
+ *   return result + " World!";
+ * });
+ * 
+ * hook.trigger(["hello", "bye"], "", []).then((message) => {
+ *   expect(message).to.equal("Hello World! Good bye World!");
+ *   return doneTest();
+ * }).catch(console.log);
  * ```
  * 
  * Take a look to the tests to see a full demo of the API.
@@ -104,7 +114,7 @@ class HookMaster {
 	static get DEFAULT_OPTIONS() {
 		return {
 			sorter: function(a, b) {
-				return a.__hook_metadata__.order >= b.__hook_metadata__.order ? 1 : -1;
+				return a.HOOK_MASTER_METADATA.order >= b.HOOK_MASTER_METADATA.order ? 1 : -1;
 			}
 		};
 	}
@@ -145,6 +155,7 @@ class HookMaster {
 		if (!(name in this.hooks)) {
 			this.hooks[name] = [];
 		}
+		return this;
 	}
 
 	/**
@@ -170,16 +181,17 @@ class HookMaster {
 	 *
 	 * @parameter `meta:Object`. **Optional**.
 	 * Metadata object for the current event.
-	 * This object is statically added to the event function through its `__hook_metadata__` property.
+	 * This object is statically added to the event function through its `HOOK_MASTER_METADATA` property.
 	 * This data can be useful to remove items by identifiers or other metadata properties, for example.
 	 * @return `undefined`. Nothing.
 	 *
 	 */
 	add(name, event, meta = {}) {
 		this.initialize(name);
-		event.__hook_metadata__ = meta;
+		event.HOOK_MASTER_METADATA = meta;
 		this.hooks[name].push(event);
 		this.hooks[name].sort(this.options.sorter);
+		return this;
 	}
 
 	/**
@@ -203,6 +215,7 @@ class HookMaster {
 		} else {
 			delete this.hooks[name];
 		}
+		return this;
 	}
 
 	/**
@@ -214,38 +227,44 @@ class HookMaster {
 	 * @name `hookMaster.trigger`
 	 * @description Triggers a specific hook. It can pass parameters (which will be shared by all of the events) and an initial result (which will be altered in each event, unless the event returns `undefined`, or nothing, in which case the result will be maintained).
 	 * @type `instance method`
-	 * @parameter `name:String`. Name of the hook to be triggered.
+	 * @parameter `name:String|Array<String>`. Name(s) of the hook(s) to be triggered.
 	 * @parameter `initialResult:Any`. Result that will be passed through all the events of the hook, allowing a decorator design pattern in every hook.
 	 * @parameter `...parameters:Any`. Parameters that all the events of the hook will receive.
 	 * @return `result:Promise`. Use the `then` of this `Promise` to access to the final `result` of the chained events of the hook. You can use the `catch` method too, as usual in Promises.
 	 *
 	 *
 	 */
-	trigger(name, initialResult = undefined, ...parameters) {
-		const hooks = this.hooks[name].sort(this.options.sorter);
-		var result = initialResult;
-		var index = 0;
-		const next = function(resolve, reject) {
-			if (!(index in hooks)) {
-				return resolve(result);
-			}
-			const hook = hooks[index++];
-			const resultTmp = hook(result, ...parameters);
-			if (resultTmp instanceof Promise) {
-				resultTmp.then(function(newResult) {
-					if (typeof newResult !== "undefined") {
-						result = newResult;
+	trigger(nameOrNames, initialResult = undefined, ...parameters) {
+		if(typeof nameOrNames === "string") {
+			const hooks = this.hooks[nameOrNames].sort(this.options.sorter);
+			var result = initialResult;
+			var index = 0;
+			const next = function(resolve, reject) {
+				if (!(index in hooks)) {
+					return resolve(result);
+				}
+				const hook = hooks[index++];
+				const resultTmp = hook(result, ...parameters);
+				if (resultTmp instanceof Promise) {
+					resultTmp.then(function(newResult) {
+						if (typeof newResult !== "undefined") {
+							result = newResult;
+						}
+						return next(resolve, reject);
+					});
+				} else {
+					if (typeof resultTmp !== "undefined") {
+						result = resultTmp;
 					}
 					return next(resolve, reject);
-				});
-			} else {
-				if (typeof resultTmp !== "undefined") {
-					result = resultTmp;
 				}
-				return next(resolve, reject);
-			}
-		};
-		return new Promise(next);
+			};
+			return new Promise(next);
+		} else if(Array.isArray(nameOrNames)) {
+			return nameOrNames.reduce((promiseChain, name) => {
+				return promiseChain.then(result => this.trigger(name, result));
+			}, Promise.resolve(initialResult));
+		} else throw new Error("InvalidArgumentTypeError", "[ERROR] HookMaster#trigger($1, ...) => $1: Only String or Array<String> accepted.")
 	}
 }
 
