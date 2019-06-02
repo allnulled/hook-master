@@ -2,7 +2,7 @@
  *
  * # HookMaster
  * 
- * ![](https://img.shields.io/badge/hook--master-v1.0.2-green.svg) ![](https://img.shields.io/badge/tests-passing-green.svg) ![](https://img.shields.io/badge/statements--coverage-100%25-green.svg) ![](https://img.shields.io/badge/branches--coverage-100%25-green.svg) ![](https://img.shields.io/badge/functions--coverage-100%25-green.svg) ![](https://img.shields.io/badge/lines--coverage-100%25-green.svg) ![](https://img.shields.io/badge/full--coverage-yes-green.svg)
+ * ![](https://img.shields.io/badge/hook--master-v1.0.3-green.svg) ![](https://img.shields.io/badge/tests-passing-green.svg) ![](https://img.shields.io/badge/statements--coverage-100%25-green.svg) ![](https://img.shields.io/badge/branches--coverage-100%25-green.svg) ![](https://img.shields.io/badge/functions--coverage-100%25-green.svg) ![](https://img.shields.io/badge/lines--coverage-100%25-green.svg) ![](https://img.shields.io/badge/full--coverage-yes-green.svg)
  * 
  * Create, remove and trigger synchronous or asynchronous events easily. No dependencies. Less than 100 lines.
  *
