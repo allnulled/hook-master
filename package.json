@@ -22,5 +22,13 @@
     "mocha": "^6.1.4",
     "nyc": "^14.0.0",
     "rimraf": "^2.6.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allnulled/hook-master.git"
+  },
+  "bugs": {
+    "url": "https://github.com/allnulled/hook-master/issues"
+  },
+  "homepage": "https://github.com/allnulled/hook-master#readme"
 }

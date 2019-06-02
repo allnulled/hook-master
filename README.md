@@ -3,7 +3,7 @@
 
 # HookMaster
 
-![](https://img.shields.io/badge/hook--master-v1.0.1-green.svg) ![](https://img.shields.io/badge/tests-passing-green.svg) ![](https://img.shields.io/badge/statements--coverage-100%25-green.svg) ![](https://img.shields.io/badge/branches--coverage-100%25-green.svg) ![](https://img.shields.io/badge/functions--coverage-100%25-green.svg) ![](https://img.shields.io/badge/lines--coverage-100%25-green.svg) ![](https://img.shields.io/badge/full--coverage-yes-green.svg)
+![](https://img.shields.io/badge/hook--master-v1.0.2-green.svg) ![](https://img.shields.io/badge/tests-passing-green.svg) ![](https://img.shields.io/badge/statements--coverage-100%25-green.svg) ![](https://img.shields.io/badge/branches--coverage-100%25-green.svg) ![](https://img.shields.io/badge/functions--coverage-100%25-green.svg) ![](https://img.shields.io/badge/lines--coverage-100%25-green.svg) ![](https://img.shields.io/badge/full--coverage-yes-green.svg)
 
 Create, remove and trigger synchronous or asynchronous events easily. No dependencies. Less than 100 lines.
 
@@ -25,7 +25,12 @@ Mainly, HookMaster was created to build:
 ## Usage
 
 ```js
-const hook = HookMaster.create();
+const HookMaster = require("hook-master");
+const hook = HookMaster.create({ // This is the default parameter, so you can skip and use simply HookMaster.create()
+	sorter: function(a, b) {
+	 return a.HOOK_MASTER_METADATA.order >= b.HOOK_MASTER_METADATA.order ? 1 : -1;
+	}
+});
 
 // Asynchronous event lastly executed by the hook "hello" (because the order is 40):
 hook.add("hello", function(result, parameters) {
