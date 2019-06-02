@@ -152,13 +152,15 @@ class HookMaster {
 	 * @name `hookMaster.initialize`
 	 * @description Initializes a new hook in the `HookMaster` instance (by a `name`).
 	 * @type `instance method`
-	 * @parameter `name:String`. Name of the new hook to be initialized.
+	 * @parameter `name:String | names:Array<String>`. Name(s) of the new hook to be initialized.
 	 * @return `undefined`. Nothing.
 	 *
 	 */
 	initialize(name) {
-		if (!(name in this.hooks)) {
+		if (typeof name === "string" && (!(name in this.hooks))) {
 			this.hooks[name] = [];
+		} else if(Array.isArray(name)) {
+			name.forEach(n => this.initialize(n));
 		}
 		return this;
 	}

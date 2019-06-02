@@ -168,7 +168,7 @@ Take a look to the tests to see a full demo of the API.
 
 **Type:** `instance method`
 
-**Parameter:** `name:String`. Name of the new hook to be initialized.
+**Parameter:** `name:String | names:Array<String>`. Name(s) of the new hook to be initialized.
 
 **Return:** `undefined`. Nothing.
 
